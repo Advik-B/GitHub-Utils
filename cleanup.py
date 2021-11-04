@@ -2,9 +2,10 @@ __author__ = 'Advik-B' # advik.b@gmail.com
 
 import os
 import sys
+from fnmatch import fnmatch
+# Third party modules
 from send2trash import send2trash as delete
 from termcolor import cprint
-from fnmatch import fnmatch
 
 DEL = False
 
@@ -39,14 +40,14 @@ elif if_allowed_files== True:
     cprint('Clean-up is starting.', 'green')
     allowed_ext = ['*.md', '*.txt'] # list of allowed extensions
     allowed_fil = []
-    
+
     with open(os.path.join(cwd,'allowed-ext.txt'), 'r') as f:
         for line in f:
             allowed_ext.append(line.strip())
         for path, subdirs, files in os.walk(cwd):
             for name in files:
                 for pattern in allowed_ext:
-                    if fnmatch(name.casefold(), pattern) or '.git' in os.path.join(path, name) or '.vscode' in os.path.join(path, name):
+                    if fnmatch(name.casefold(), pattern) or '.git' in os.path.join(path, name) or '.vscode' in os.path.join(path, name) or '.keep' in os.path.join(path, name):
                         allowed_fil.append(os.path.join(path, name))
 
     for path, subdirs, files in os.walk(cwd):
@@ -57,6 +58,6 @@ elif if_allowed_files== True:
                 delete(pth)
                 DEL = True
     cprint('Clean-up is done.', 'green')
-    if DEL == True:
+    if DEL:
         for line in endmsg.split('\n'):
             cprint(line, 'yellow')
