@@ -1,1 +1,3 @@
+pip
 termcolor
+Send2Trash
